@@ -1,0 +1,306 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>股市日報 · 2026/04/15 07:50</title>
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4/dist/chart.umd.min.js"></script>
+<style>
+  :root {
+    --bg: #f5f5f3;
+    --card: #ffffff;
+    --border: #e4e2d9;
+    --text: #1a1a18;
+    --muted: #74726b;
+    --up: #1a7a4a;
+    --up-bg: #eaf4ee;
+    --down: #b83030;
+    --down-bg: #fdeaea;
+    --accent: #2d5fd6;
+    --radius: 10px;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root {
+      --bg: #18181a;
+      --card: #242428;
+      --border: #36363a;
+      --text: #e8e6df;
+      --muted: #8a8880;
+      --up: #4db87a;
+      --up-bg: #162b1f;
+      --down: #e06060;
+      --down-bg: #2b1616;
+      --accent: #6b9aff;
+    }
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { background: var(--bg); color: var(--text); font-family: system-ui, -apple-system, sans-serif; font-size: 15px; line-height: 1.6; padding: 20px; }
+  .page { max-width: 1000px; margin: 0 auto; }
+  header { display: flex; justify-content: space-between; align-items: baseline; padding-bottom: 16px; border-bottom: 1px solid var(--border); margin-bottom: 24px; flex-wrap: wrap; gap: 8px; }
+  header h1 { font-size: 20px; font-weight: 600; }
+  header .ts { font-size: 13px; color: var(--muted); }
+  section { margin-bottom: 32px; }
+  section h2 { font-size: 15px; font-weight: 600; color: var(--muted); letter-spacing: .04em; text-transform: uppercase; margin-bottom: 12px; }
+  .cards { display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 12px; }
+  .card { background: var(--card); border: 1px solid var(--border); border-radius: var(--radius); padding: 16px; }
+  .card .label { font-size: 12px; color: var(--muted); margin-bottom: 4px; }
+  .card .price { font-size: 22px; font-weight: 600; letter-spacing: -.02em; }
+  .card .change { font-size: 13px; margin-top: 4px; }
+  .card .meta { font-size: 12px; color: var(--muted); margin-top: 8px; border-top: 1px solid var(--border); padding-top: 8px; display: flex; gap: 12px; flex-wrap: wrap; }
+  .up { color: var(--up); }
+  .down { color: var(--down); }
+  .neutral { color: var(--muted); }
+  .pill { display: inline-block; padding: 2px 8px; border-radius: 20px; font-size: 12px; font-weight: 500; }
+  .pill.up { background: var(--up-bg); color: var(--up); }
+  .pill.down { background: var(--down-bg); color: var(--down); }
+  .inst-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(180px, 1fr)); gap: 12px; }
+  .inst-card { background: var(--card); border: 1px solid var(--border); border-radius: var(--radius); padding: 14px; }
+  .inst-card .who { font-size: 12px; color: var(--muted); margin-bottom: 4px; }
+  .inst-card .amt { font-size: 18px; font-weight: 600; }
+  .ranking { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+  .rank-group { background: var(--card); border: 1px solid var(--border); border-radius: var(--radius); padding: 14px; }
+  .rank-group h3 { font-size: 12px; color: var(--muted); margin-bottom: 10px; }
+  .rank-row { display: flex; justify-content: space-between; align-items: center; padding: 6px 0; border-bottom: 1px solid var(--border); font-size: 13px; }
+  .rank-row:last-child { border-bottom: none; }
+  .rank-row .ticker { font-weight: 500; }
+  .ai-box { background: var(--card); border: 1px solid var(--border); border-radius: var(--radius); padding: 20px; white-space: pre-wrap; font-size: 14px; line-height: 1.8; color: var(--text); }
+  .chart-wrap { background: var(--card); border: 1px solid var(--border); border-radius: var(--radius); padding: 16px; margin-top: 12px; }
+  canvas { max-height: 180px; }
+  .vix-badge { font-size: 13px; }
+  @media (max-width: 600px) { .ranking { grid-template-columns: 1fr; } }
+</style>
+</head>
+<body>
+<div class="page">
+
+<header>
+  <h1>股市日報</h1>
+  <span class="ts">更新時間：2026/04/15 07:50</span>
+</header>
+
+
+<section>
+  <h2>美股</h2>
+  <div class="cards">
+    
+    
+    <div class="card">
+      <div class="label">SPX</div>
+      <div class="price">6,967.38</div>
+      <div class="change up">
+        +1.18%
+        
+      </div>
+      <div class="meta">
+        <span>量比 1.01</span>
+        <span>H 6,969.42</span>
+        <span>L 6,905.17</span>
+      </div>
+    </div>
+    
+    
+    
+    <div class="card">
+      <div class="label">Nasdaq</div>
+      <div class="price">23,639.08</div>
+      <div class="change up">
+        +1.96%
+        
+      </div>
+      <div class="meta">
+        <span>量比 1.02</span>
+        <span>H 23,639.08</span>
+        <span>L 23,331.50</span>
+      </div>
+    </div>
+    
+    
+    
+    <div class="card">
+      <div class="label">Dow</div>
+      <div class="price">48,535.99</div>
+      <div class="change up">
+        +0.66%
+        
+      </div>
+      <div class="meta">
+        <span>量比 1.09</span>
+        <span>H 48,592.29</span>
+        <span>L 48,192.30</span>
+      </div>
+    </div>
+    
+    
+    
+    <div class="card">
+      <div class="label">VIX</div>
+      <div class="price">18.08</div>
+      <div class="change down">
+        -1.53%
+        <span class="vix-badge muted"> · 恐慌指數</span>
+      </div>
+      <div class="meta">
+        <span>量比 None</span>
+        <span>H 18.19</span>
+        <span>L 18.08</span>
+      </div>
+    </div>
+    
+    
+  </div>
+
+  
+  <div class="ranking" style="margin-top:12px">
+    <div class="rank-group">
+      <h3>強勢個股</h3>
+      
+      <div class="rank-row">
+        <span class="ticker">META</span>
+        <span class="pill up">+4.41%</span>
+      </div>
+      
+      <div class="rank-row">
+        <span class="ticker">AMZN</span>
+        <span class="pill up">+3.81%</span>
+      </div>
+      
+      <div class="rank-row">
+        <span class="ticker">NVDA</span>
+        <span class="pill up">+3.80%</span>
+      </div>
+      
+    </div>
+    <div class="rank-group">
+      <h3>弱勢個股</h3>
+      
+      <div class="rank-row">
+        <span class="ticker">TSLA</span>
+        <span class="pill down">+3.34%</span>
+      </div>
+      
+      <div class="rank-row">
+        <span class="ticker">MSFT</span>
+        <span class="pill down">+2.27%</span>
+      </div>
+      
+      <div class="rank-row">
+        <span class="ticker">AAPL</span>
+        <span class="pill down">-0.14%</span>
+      </div>
+      
+    </div>
+  </div>
+  
+
+  
+  <div class="ai-box" style="margin-top:12px">（摘要產生失敗：Error code: 400 - {'type': 'error', 'error': {'type': 'invalid_request_error', 'message': 'Your credit balance is too low to access the Anthropic API. Please go to Plans & Billing to upgrade or purchase credits.'}, 'request_id': 'req_011Ca5C2zydiDnpBietoEjQy'}）</div>
+  
+</section>
+
+
+<section>
+  <h2>台股</h2>
+  <div class="cards">
+    
+    
+    <div class="card">
+      <div class="label">加權指數</div>
+      <div class="price">36,722.14</div>
+      <div class="change up">+1.17%</div>
+      <div class="meta">
+        <span>成交量 0</span>
+        <span>量比 0.0</span>
+      </div>
+    </div>
+    
+    
+  </div>
+
+  
+  
+
+  
+  <div class="ranking" style="margin-top:12px">
+    <div class="rank-group">
+      <h3>強勢個股</h3>
+      
+      <div class="rank-row">
+        <span class="ticker">2454.TW</span>
+        <span class="pill up">+4.07%</span>
+      </div>
+      
+      <div class="rank-row">
+        <span class="ticker">2308.TW</span>
+        <span class="pill up">+2.00%</span>
+      </div>
+      
+      <div class="rank-row">
+        <span class="ticker">2330.TW</span>
+        <span class="pill up">+1.22%</span>
+      </div>
+      
+    </div>
+    <div class="rank-group">
+      <h3>弱勢個股</h3>
+      
+      <div class="rank-row">
+        <span class="ticker">2330.TW</span>
+        <span class="pill down">+1.22%</span>
+      </div>
+      
+      <div class="rank-row">
+        <span class="ticker">2882.TW</span>
+        <span class="pill down">+0.28%</span>
+      </div>
+      
+      <div class="rank-row">
+        <span class="ticker">2317.TW</span>
+        <span class="pill down">0.00%</span>
+      </div>
+      
+    </div>
+  </div>
+  
+
+  
+  <div class="ai-box" style="margin-top:12px">（摘要產生失敗：Error code: 400 - {'type': 'error', 'error': {'type': 'invalid_request_error', 'message': 'Your credit balance is too low to access the Anthropic API. Please go to Plans & Billing to upgrade or purchase credits.'}, 'request_id': 'req_011Ca5C3219i9u4zMdpNzX9G'}）</div>
+  
+</section>
+
+
+
+
+<section>
+  <h2>台積電 5 日走勢</h2>
+  <div class="chart-wrap">
+    <canvas id="tsmcChart"></canvas>
+  </div>
+</section>
+<script>
+(function(){
+  const hist = [{"close": 1955.0, "date": "2026-04-09"}, {"close": 2000.0, "date": "2026-04-10"}, {"close": 1990.0, "date": "2026-04-13"}, {"close": 2055.0, "date": "2026-04-14"}, {"close": 2080.0, "date": "2026-04-15"}];
+  const labels = hist.map(d => d.date.slice(5));
+  const data = hist.map(d => d.close);
+  const color = data[data.length-1] >= data[0] ? '#1a7a4a' : '#b83030';
+  new Chart(document.getElementById('tsmcChart'), {
+    type: 'line',
+    data: {
+      labels,
+      datasets: [{ data, borderColor: color, borderWidth: 2, pointRadius: 3, fill: false, tension: 0.3 }]
+    },
+    options: {
+      plugins: { legend: { display: false } },
+      scales: {
+        x: { grid: { display: false } },
+        y: { grid: { color: 'rgba(128,128,128,0.15)' }, ticks: { maxTicksLimit: 5 } }
+      },
+      responsive: true, maintainAspectRatio: true
+    }
+  });
+})();
+</script>
+
+
+</div>
+</body>
+</html>
