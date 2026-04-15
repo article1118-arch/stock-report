@@ -7,7 +7,7 @@ analyze.py
 import json
 import os
 import pandas as pd
-import pandas_ta as ta
+
 
 INPUT_PATH = "data/market_data.json"
 OUTPUT_PATH = "data/analysis.json"
