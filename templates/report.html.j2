@@ -1,0 +1,238 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>股市日報 · {{ generated_str }}</title>
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4/dist/chart.umd.min.js"></script>
+<style>
+  :root {
+    --bg: #f5f5f3;
+    --card: #ffffff;
+    --border: #e4e2d9;
+    --text: #1a1a18;
+    --muted: #74726b;
+    --up: #1a7a4a;
+    --up-bg: #eaf4ee;
+    --down: #b83030;
+    --down-bg: #fdeaea;
+    --accent: #2d5fd6;
+    --radius: 10px;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root {
+      --bg: #18181a;
+      --card: #242428;
+      --border: #36363a;
+      --text: #e8e6df;
+      --muted: #8a8880;
+      --up: #4db87a;
+      --up-bg: #162b1f;
+      --down: #e06060;
+      --down-bg: #2b1616;
+      --accent: #6b9aff;
+    }
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { background: var(--bg); color: var(--text); font-family: system-ui, -apple-system, sans-serif; font-size: 15px; line-height: 1.6; padding: 20px; }
+  .page { max-width: 1000px; margin: 0 auto; }
+  header { display: flex; justify-content: space-between; align-items: baseline; padding-bottom: 16px; border-bottom: 1px solid var(--border); margin-bottom: 24px; flex-wrap: wrap; gap: 8px; }
+  header h1 { font-size: 20px; font-weight: 600; }
+  header .ts { font-size: 13px; color: var(--muted); }
+  section { margin-bottom: 32px; }
+  section h2 { font-size: 15px; font-weight: 600; color: var(--muted); letter-spacing: .04em; text-transform: uppercase; margin-bottom: 12px; }
+  .cards { display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 12px; }
+  .card { background: var(--card); border: 1px solid var(--border); border-radius: var(--radius); padding: 16px; }
+  .card .label { font-size: 12px; color: var(--muted); margin-bottom: 4px; }
+  .card .price { font-size: 22px; font-weight: 600; letter-spacing: -.02em; }
+  .card .change { font-size: 13px; margin-top: 4px; }
+  .card .meta { font-size: 12px; color: var(--muted); margin-top: 8px; border-top: 1px solid var(--border); padding-top: 8px; display: flex; gap: 12px; flex-wrap: wrap; }
+  .up { color: var(--up); }
+  .down { color: var(--down); }
+  .neutral { color: var(--muted); }
+  .pill { display: inline-block; padding: 2px 8px; border-radius: 20px; font-size: 12px; font-weight: 500; }
+  .pill.up { background: var(--up-bg); color: var(--up); }
+  .pill.down { background: var(--down-bg); color: var(--down); }
+  .inst-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(180px, 1fr)); gap: 12px; }
+  .inst-card { background: var(--card); border: 1px solid var(--border); border-radius: var(--radius); padding: 14px; }
+  .inst-card .who { font-size: 12px; color: var(--muted); margin-bottom: 4px; }
+  .inst-card .amt { font-size: 18px; font-weight: 600; }
+  .ranking { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+  .rank-group { background: var(--card); border: 1px solid var(--border); border-radius: var(--radius); padding: 14px; }
+  .rank-group h3 { font-size: 12px; color: var(--muted); margin-bottom: 10px; }
+  .rank-row { display: flex; justify-content: space-between; align-items: center; padding: 6px 0; border-bottom: 1px solid var(--border); font-size: 13px; }
+  .rank-row:last-child { border-bottom: none; }
+  .rank-row .ticker { font-weight: 500; }
+  .ai-box { background: var(--card); border: 1px solid var(--border); border-radius: var(--radius); padding: 20px; white-space: pre-wrap; font-size: 14px; line-height: 1.8; color: var(--text); }
+  .chart-wrap { background: var(--card); border: 1px solid var(--border); border-radius: var(--radius); padding: 16px; margin-top: 12px; }
+  canvas { max-height: 180px; }
+  .vix-badge { font-size: 13px; }
+  @media (max-width: 600px) { .ranking { grid-template-columns: 1fr; } }
+</style>
+</head>
+<body>
+<div class="page">
+
+<header>
+  <h1>股市日報</h1>
+  <span class="ts">更新時間：{{ generated_str }}</span>
+</header>
+
+{# ── 美股 ── #}
+<section>
+  <h2>美股</h2>
+  <div class="cards">
+    {% for name, d in us.indices.items() %}
+    {% if d %}
+    <div class="card">
+      <div class="label">{{ name }}</div>
+      <div class="price">{{ d.close | fmt_num }}</div>
+      <div class="change {{ d.change_pct | pct_class }}">
+        {{ d.change_pct | fmt_pct }}
+        {% if name == "VIX" %}<span class="vix-badge muted"> · 恐慌指數</span>{% endif %}
+      </div>
+      <div class="meta">
+        <span>量比 {{ d.volume_ratio }}</span>
+        <span>H {{ d.high | fmt_num }}</span>
+        <span>L {{ d.low | fmt_num }}</span>
+      </div>
+    </div>
+    {% endif %}
+    {% endfor %}
+  </div>
+
+  {% if us.ranking %}
+  <div class="ranking" style="margin-top:12px">
+    <div class="rank-group">
+      <h3>強勢個股</h3>
+      {% for s in us.ranking.top3 %}
+      <div class="rank-row">
+        <span class="ticker">{{ s.ticker }}</span>
+        <span class="pill up">{{ s.change_pct | fmt_pct }}</span>
+      </div>
+      {% endfor %}
+    </div>
+    <div class="rank-group">
+      <h3>弱勢個股</h3>
+      {% for s in us.ranking.bottom3 %}
+      <div class="rank-row">
+        <span class="ticker">{{ s.ticker }}</span>
+        <span class="pill down">{{ s.change_pct | fmt_pct }}</span>
+      </div>
+      {% endfor %}
+    </div>
+  </div>
+  {% endif %}
+
+  {% if summary.us %}
+  <div class="ai-box" style="margin-top:12px">{{ summary.us }}</div>
+  {% endif %}
+</section>
+
+{# ── 台股 ── #}
+<section>
+  <h2>台股</h2>
+  <div class="cards">
+    {% for name, d in tw.indices.items() %}
+    {% if d %}
+    <div class="card">
+      <div class="label">{{ name }}</div>
+      <div class="price">{{ d.close | fmt_num }}</div>
+      <div class="change {{ d.change_pct | pct_class }}">{{ d.change_pct | fmt_pct }}</div>
+      <div class="meta">
+        <span>成交量 {{ d.volume | fmt_vol }}</span>
+        <span>量比 {{ d.volume_ratio }}</span>
+      </div>
+    </div>
+    {% endif %}
+    {% endfor %}
+  </div>
+
+  {# 三大法人 #}
+  {% if tw.institutional %}
+  {% set inst = tw.institutional %}
+  <div class="inst-grid" style="margin-top:12px">
+    <div class="inst-card">
+      <div class="who">外資</div>
+      <div class="amt {{ 'up' if inst.foreign_net > 0 else 'down' }}">{{ inst.foreign_net | fmt_inst }}</div>
+    </div>
+    <div class="inst-card">
+      <div class="who">投信</div>
+      <div class="amt {{ 'up' if inst.trust_net > 0 else 'down' }}">{{ inst.trust_net | fmt_inst }}</div>
+    </div>
+    <div class="inst-card">
+      <div class="who">自營商</div>
+      <div class="amt {{ 'up' if inst.dealer_net > 0 else 'down' }}">{{ inst.dealer_net | fmt_inst }}</div>
+    </div>
+    <div class="inst-card">
+      <div class="who">三大法人合計</div>
+      <div class="amt {{ 'up' if inst.total_net > 0 else 'down' }}">{{ inst.total_net | fmt_inst }}</div>
+    </div>
+  </div>
+  {% endif %}
+
+  {% if tw.ranking %}
+  <div class="ranking" style="margin-top:12px">
+    <div class="rank-group">
+      <h3>強勢個股</h3>
+      {% for s in tw.ranking.top3 %}
+      <div class="rank-row">
+        <span class="ticker">{{ s.ticker }}</span>
+        <span class="pill up">{{ s.change_pct | fmt_pct }}</span>
+      </div>
+      {% endfor %}
+    </div>
+    <div class="rank-group">
+      <h3>弱勢個股</h3>
+      {% for s in tw.ranking.bottom3 %}
+      <div class="rank-row">
+        <span class="ticker">{{ s.ticker }}</span>
+        <span class="pill down">{{ s.change_pct | fmt_pct }}</span>
+      </div>
+      {% endfor %}
+    </div>
+  </div>
+  {% endif %}
+
+  {% if summary.tw %}
+  <div class="ai-box" style="margin-top:12px">{{ summary.tw }}</div>
+  {% endif %}
+</section>
+
+{# ── 走勢圖：台積電5日 ── #}
+{% set tsmc = tw.stocks["2330.TW"] %}
+{% if tsmc and tsmc.history_5d %}
+<section>
+  <h2>台積電 5 日走勢</h2>
+  <div class="chart-wrap">
+    <canvas id="tsmcChart"></canvas>
+  </div>
+</section>
+<script>
+(function(){
+  const hist = {{ tsmc.history_5d | tojson }};
+  const labels = hist.map(d => d.date.slice(5));
+  const data = hist.map(d => d.close);
+  const color = data[data.length-1] >= data[0] ? '#1a7a4a' : '#b83030';
+  new Chart(document.getElementById('tsmcChart'), {
+    type: 'line',
+    data: {
+      labels,
+      datasets: [{ data, borderColor: color, borderWidth: 2, pointRadius: 3, fill: false, tension: 0.3 }]
+    },
+    options: {
+      plugins: { legend: { display: false } },
+      scales: {
+        x: { grid: { display: false } },
+        y: { grid: { color: 'rgba(128,128,128,0.15)' }, ticks: { maxTicksLimit: 5 } }
+      },
+      responsive: true, maintainAspectRatio: true
+    }
+  });
+})();
+</script>
+{% endif %}
+
+</div>
+</body>
+</html>

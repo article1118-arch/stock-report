@@ -1,0 +1,50 @@
+name: 每日股市報告
+
+on:
+  schedule:
+    # 台股盤後：每週一至五 UTC 06:35（台灣時間 14:35）
+    - cron: "35 6 * * 1-5"
+    # 美股盤後：每週二至六 UTC 22:05（台灣時間隔日 06:05）
+    - cron: "5 22 * * 2-6"
+  workflow_dispatch:   # 允許手動觸發，方便測試
+
+jobs:
+  build-report:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write  # 需要 push 權限
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: 設定 Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+          cache: pip
+
+      - name: 安裝套件
+        run: pip install -r requirements.txt
+
+      - name: 抓取市場資料
+        run: python scripts/fetch_data.py
+
+      - name: 分析量能指標
+        run: python scripts/analyze.py
+
+      - name: AI 摘要
+        env:
+          ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
+        run: python scripts/summarize.py
+
+      - name: 產生 HTML 報告
+        run: python scripts/generate_html.py
+
+      - name: 部署到 GitHub Pages
+        uses: peaceiris/actions-gh-pages@v4
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: ./docs
+          commit_message: "chore: 更新 ${{ github.run_id }} 報告"
+          force_orphan: false   # 保留歷史，方便回頭查舊報告
