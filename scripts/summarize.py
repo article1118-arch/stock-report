@@ -132,7 +132,7 @@ def call_claude(prompt: str, label: str) -> str:
     print(f"  呼叫 Claude API：{label}...")
     try:
         msg = client.messages.create(
-            model="claude-sonnet-4-20250514",
+            model="claude-opus-4-5",
             max_tokens=512,
             messages=[{"role": "user", "content": prompt}],
         )
