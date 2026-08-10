@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>股市日報 · 2026/08/08 22:32</title>
+<title>股市日報 · 2026/08/10 08:14</title>
 <script src="https://cdn.jsdelivr.net/npm/chart.js@4/dist/chart.umd.min.js"></script>
 <style>
   :root {
@@ -75,7 +75,7 @@
 
 <header>
   <h1>股市日報</h1>
-  <span class="ts">更新時間：2026/08/08 22:32</span>
+  <span class="ts">更新時間：2026/08/10 08:14</span>
 </header>
 
 
@@ -134,15 +134,15 @@
     
     <div class="card">
       <div class="label">VIX</div>
-      <div class="price">14.90</div>
-      <div class="change down">
-        -1.65%
+      <div class="price">15.46</div>
+      <div class="change up">
+        +3.76%
         <span class="vix-badge muted"> · 恐慌指數</span>
       </div>
       <div class="meta">
         <span>量比 None</span>
-        <span>H 15.36</span>
-        <span>L 14.77</span>
+        <span>H 15.46</span>
+        <span>L 15.39</span>
       </div>
     </div>
     
@@ -205,11 +205,11 @@
     
     <div class="card">
       <div class="label">加權指數</div>
-      <div class="price">44,225.91</div>
-      <div class="change down">-0.38%</div>
+      <div class="price">44,928.76</div>
+      <div class="change up">+1.59%</div>
       <div class="meta">
-        <span>成交量 4.4M</span>
-        <span>量比 0.89</span>
+        <span>成交量 0</span>
+        <span>量比 0.0</span>
       </div>
     </div>
     
@@ -218,6 +218,26 @@
 
   
   
+  
+  <div class="inst-grid" style="margin-top:12px">
+    <div class="inst-card">
+      <div class="who">外資</div>
+      <div class="amt down">-0.8億</div>
+    </div>
+    <div class="inst-card">
+      <div class="who">投信</div>
+      <div class="amt down">—</div>
+    </div>
+    <div class="inst-card">
+      <div class="who">自營商</div>
+      <div class="amt up">+0.0億</div>
+    </div>
+    <div class="inst-card">
+      <div class="who">三大法人合計</div>
+      <div class="amt down">-0.0億</div>
+    </div>
+  </div>
+  
 
   
   <div class="ranking" style="margin-top:12px">
@@ -225,18 +245,18 @@
       <h3>強勢個股</h3>
       
       <div class="rank-row">
+        <span class="ticker">2308.TW</span>
+        <span class="pill up">+10.00%</span>
+      </div>
+      
+      <div class="rank-row">
+        <span class="ticker">2317.TW</span>
+        <span class="pill up">+1.73%</span>
+      </div>
+      
+      <div class="rank-row">
         <span class="ticker">2882.TW</span>
-        <span class="pill up">+1.95%</span>
-      </div>
-      
-      <div class="rank-row">
-        <span class="ticker">2330.TW</span>
-        <span class="pill up">+0.21%</span>
-      </div>
-      
-      <div class="rank-row">
-        <span class="ticker">2454.TW</span>
-        <span class="pill up">-0.51%</span>
+        <span class="pill up">+1.61%</span>
       </div>
       
     </div>
@@ -244,18 +264,18 @@
       <h3>弱勢個股</h3>
       
       <div class="rank-row">
+        <span class="ticker">2882.TW</span>
+        <span class="pill down">+1.61%</span>
+      </div>
+      
+      <div class="rank-row">
         <span class="ticker">2454.TW</span>
-        <span class="pill down">-0.51%</span>
+        <span class="pill down">+1.54%</span>
       </div>
       
       <div class="rank-row">
-        <span class="ticker">2317.TW</span>
-        <span class="pill down">-1.70%</span>
-      </div>
-      
-      <div class="rank-row">
-        <span class="ticker">2308.TW</span>
-        <span class="pill down">-1.79%</span>
+        <span class="ticker">2330.TW</span>
+        <span class="pill down">+0.42%</span>
       </div>
       
     </div>
@@ -278,7 +298,7 @@
 </section>
 <script>
 (function(){
-  const hist = [{"close": 2370.0, "date": "2026-08-03"}, {"close": 2320.0, "date": "2026-08-04"}, {"close": 2405.0, "date": "2026-08-05"}, {"close": 2365.0, "date": "2026-08-06"}, {"close": 2370.0, "date": "2026-08-07"}];
+  const hist = [{"close": 2320.0, "date": "2026-08-04"}, {"close": 2405.0, "date": "2026-08-05"}, {"close": 2365.0, "date": "2026-08-06"}, {"close": 2370.0, "date": "2026-08-07"}, {"close": 2380.0, "date": "2026-08-10"}];
   const labels = hist.map(d => d.date.slice(5));
   const data = hist.map(d => d.close);
   const color = data[data.length-1] >= data[0] ? '#1a7a4a' : '#b83030';
